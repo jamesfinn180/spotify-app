@@ -1,0 +1,16 @@
+.FavouriteButton {
+  border: none;
+  background: transparent;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px;
+  color: black;
+  cursor: pointer;
+  &--active {
+    color: #971E03;
+  }
+}
+
+.Icon {
+  margin-right: 8px;
+}

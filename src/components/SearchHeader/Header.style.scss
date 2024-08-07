@@ -1,0 +1,76 @@
+$headerBg: #1C0343;
+$white: #ffffff;
+$black: #000000;
+
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 400;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+}
+
+.Header {
+  &__container {
+    width: 100%;
+    background: $black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 116px;
+    transition: height 0.5s ease-in-out;
+
+    &--home {
+      height: 516px;
+      background: $headerBg;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.Heading {
+  color: $white;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48.41px;
+}
+
+.SearchInput {
+  width: 100%;
+  @media (max-width: 800px) {
+    width: 92%;
+  }
+
+  &__control {
+    padding: 16px;
+    background: $white;
+    border: solid 1px black;
+    border-radius: 6px;
+  }
+  &__indicators {
+    display: none;
+  }
+  &__group > &__group-heading  {
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #23252670;
+  }
+  &__option {
+    font-family: "San Francisco", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: black;
+  }
+}
