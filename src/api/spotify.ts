@@ -34,81 +34,108 @@ const getToken = async (): Promise<string> => {
   return token;
 };
 
+
 export const searchSpotify = async (query: string, type?: string): Promise<any> => {
-	const searchType = !type ? ['artist', 'album'] : type
+	const searchType = !type ? ['artist', 'album'].join(',') : type
 	const token = await getToken();
 	const SEARCH_URL = `${BASE_URL}search`;
 
-	const response = await fetch(`${SEARCH_URL}?q=${encodeURIComponent(query)}&type=${searchType}&limit=10`, {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${token}`
+	try {
+		const response = await fetch(`${SEARCH_URL}?q=${encodeURIComponent(query)}&type=${searchType}&limit=10`, {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+	
+		if (!response.ok) {
+			const errorData = await response.json();
+      const errorMessage = errorData?.error?.message || 'An error occurred during the request.';
+      return { error: `HTTP error ${response.status}: ${errorMessage}` };
 		}
-	});
+	
+		const data = await response.json();
+		return data;
 
-	if (!response.ok) {
-		throw new Error('Network response was not ok');
+	} catch(error) {
+		return error
 	}
-
-	const data = await response.json();
-	return data;
 };
+
 
 export const getAlbumData = async (albumId: string): Promise<any> => {
 	const token = await getToken();
 	const ALBUM_URL = `${BASE_URL}albums/${albumId}`;
 
-	const response = await fetch(`${ALBUM_URL}`, {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${token}`
+	try {
+		const response = await fetch(`${ALBUM_URL}`, {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+      const errorMessage = errorData?.error?.message || 'An error occurred during the album request.';
+      return { error: `HTTP error ${response.status}: ${errorMessage}` };
 		}
-	});
 
-	if (!response.ok) {
-		throw new Error('Network response was not ok');
+		const data = await response.json();
+
+		const { name, images, total_tracks: totalTracks, release_date: releaseDate } = data;
+		const tracks = data?.tracks?.items.map((track: any) => track.name)
+		return { name, images, totalTracks, releaseDate, tracks };
+
+	} catch (error) {
+		return error
 	}
-
-	const data = await response.json();
-	const { name, images } = data;
-	const tracks = data?.tracks?.items.map((track: any) => track.name)
-	return { name, images, tracks };
 };
+
 
 export const getArtistData = async (artistId: string): Promise<any> => {
 	const token = await getToken();
 	const ARTIST_URL = `${BASE_URL}artists/${artistId}`;
 	const ARTIST_ALBUM_URL = `${ARTIST_URL}/albums`
 
-	const artistResponse = await fetch(`${ARTIST_URL}`, {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${token}`
+	try {
+		const artistResponse = await fetch(`${ARTIST_URL}`, {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		if (!artistResponse.ok) {
+			const errorData = await artistResponse.json();
+      const errorMessage = errorData?.error?.message || 'An error occurred during the artist request.';
+      return { error: `HTTP error ${artistResponse.status}: ${errorMessage}` };
 		}
-	});
-	if (!artistResponse.ok) {
-		throw new Error('Network response was not ok');
-	}
-
-	const artistData = await artistResponse.json();
-
-	const albumResponse = await fetch(`${ARTIST_ALBUM_URL}`, {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${token}`
-		}
-	});
-	if (!albumResponse.ok) {
-		throw new Error('Network response was not ok');
-	}
-
-	const albumData = await albumResponse.json();
-
-	const { name, images } = artistData;
-	const albums = albumData.items.map((album: any) => {
-		return { name: album.name, images: album.images }
-	})
 	
-	return { name, images, albums };
+		const artistData = await artistResponse.json();
+	
+		const albumResponse = await fetch(`${ARTIST_ALBUM_URL}`, {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		if (!albumResponse.ok) {
+			const errorData = await albumResponse.json();
+      const errorMessage = errorData?.error?.message || 'An error occurred during the album request.';
+      return { error: `HTTP error ${albumResponse.status}: ${errorMessage}` };
+		}
+	
+		const albumData = await albumResponse.json();
+	
+		const { name, images, popularity, genres, followers } = artistData;
+		const albums = albumData.items.map((album: any) => {
+			return { name: album.name, images: album.images }
+		})
+		
+		return { name, images, popularity, genres, followers, albums };
+
+	} catch (error) {
+		return error
+	}
 };
   

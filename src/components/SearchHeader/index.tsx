@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { searchSpotify } from '../../api/spotify';
 import { ROUTES, PARAMS } from '../../utils/paths';
@@ -31,7 +31,7 @@ interface IGroupOption {
 
 const DEBOUNCE_TIME_MS = 500
 
-const Header = () => {
+const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchData, setSearchData] = useState<IGroupOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<IOption | null>(null);

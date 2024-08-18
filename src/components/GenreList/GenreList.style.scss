@@ -1,0 +1,15 @@
+.GenreList {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+.GenreItem {
+  padding: 3px 10px;
+  background: black;
+  border-radius: 4px;
+  color: white;
+}

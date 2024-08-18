@@ -1,0 +1,32 @@
+$bar-height: 18px;
+$bar-padding: 3px;
+
+.PopularityBar {
+  width: 100%;
+  height: $bar-height;
+  border-radius: 30px;
+  background: black;
+  margin-bottom: 10px;
+
+  &__exterior {
+    padding: $bar-padding;
+  }
+
+  &__interior {
+    background: #0f8f3b;
+    height: calc($bar-height - ($bar-padding * 2));
+    width: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    transition: width 2.5s ease-out;
+  }
+}
+
+.Followers {
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  text-shadow: 1px 1px 0px #000;
+  margin-bottom: 3px;
+}

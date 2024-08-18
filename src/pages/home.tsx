@@ -1,6 +1,6 @@
 import FavouritesList from '../components/FavouritesList';
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <div className='Page'>
       <div className='Page__container'>
